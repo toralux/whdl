@@ -1,0 +1,9 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# whdl download state (created inside --dest)
+.whdl/
+
+# macOS
+.DS_Store
