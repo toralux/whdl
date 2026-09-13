@@ -65,9 +65,8 @@ CHIPSET_FOLDER = {
 }
 # Chipset values describe the MINIMUM chipset a game needs. Retroplay's packs
 # only mark AGA titles - everything unmarked runs on plain OCS and therefore
-# on ECS and AGA machines too. 'ocs' and 'ecs' are friendly aliases for that
-# universal bucket ('ecs-ocs'); a real ECS-only/OCS-only split does not exist
-# in the data.
+# on ECS and AGA machines too. 'ocs' and 'ecs' are aliases for that universal
+# bucket ('ecs-ocs'); an ECS-only/OCS-only split does not exist in the data.
 CHIPSET_ALIASES = {"ocs": "ecs-ocs", "ecs": "ecs-ocs"}
 # Language markers in the exact order the WHDLoad Download Tool applies them
 # (later matches win). Marker regex is  _<marker>(\.|_)  , case sensitive.

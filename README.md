@@ -1,8 +1,9 @@
-# whdl.py — WHDLoad bulk fetcher for macOS
+# whdl — WHDLoad bulk fetcher
 
 Single-file, stdlib-only Python 3.8+ tool that bulk-downloads Retroplay's WHDLoad
 packs from the Turran file server with chipset / language / memory filtering,
-resumable downloads, and full/diff modes. No pip installs, no Wine, no VM.
+resumable downloads, and full/diff modes. Runs on macOS, Linux and Windows —
+no pip installs, no Wine, no VM.
 
 ## Install
 
@@ -21,13 +22,13 @@ curl -LO https://raw.githubusercontent.com/toralux/whdl/main/whdl.py
 python3 whdl.py --help
 ```
 
-## Your A500 set (ECS/OCS only, English)
+## Quick start: stock A500 (OCS, English)
 
-    python3 whdl.py --dest ~/Amiga/WHDLoad --chipset ecs-ocs --lang en
+    python3 whdl.py --dest ~/Amiga/WHDLoad --chipset ocs --lang en
 
-First run downloads the whole filtered set (~2 GB, ~2600 files). After that,
-every run only fetches **new or changed** packs (diff mode) — so you can re-run
-it monthly to stay current.
+First run downloads the whole filtered set (about 2,700 files / 2.1 GB with
+`--lang en`; 3,329 files / 3.1 GB without it). After that, every run only
+fetches **new or changed** packs (diff mode) — re-run monthly to stay current.
 
 ## Options
 
@@ -47,15 +48,13 @@ it monthly to stay current.
 | `--dry-run` | flag | off | Show plan and sizes, download nothing |
 | `--reset-state` | flag | off | Forget what's been seen (diff acts like first run) |
 
-## Chipset semantics
+Filter values express the **minimum chipset a game requires**:
 
-Filters express the **minimum chipset a game needs**:
+- `aga` — the game requires an AGA machine (A1200/A4000/CD32) and will not run on a stock A500.
+- `ocs`, `ecs`, `ecs-ocs` — the game runs on plain OCS, i.e. on any Amiga. All three names select the same bucket, which Retroplay labels "ECS-OCS".
+- `floppy` (the default) — `ocs + aga`: every disk-based game a standard Amiga can run. CD32, CDTV, CD-ROM and NTSC titles are excluded unless named explicitly, e.g. `--chipset floppy,cd32` or `--chipset all`.
 
-- `aga` — the game requires an AGA machine (A1200/A4000/CD32); it will not run on a stock A500.
-- `ocs`, `ecs`, `ecs-ocs` — the game runs on plain OCS, i.e. on *any* Amiga. These three values are aliases for the same bucket, which Retroplay labels "ECS-OCS".
-- `floppy` (the default) — `ocs + aga`: every disk-based game a standard Amiga can run. CD32, CDTV and CD-ROM titles (as well as NTSC) are excluded unless you name them explicitly, e.g. `--chipset floppy,cd32` or `--chipset all`.
-
-Retroplay's packs only mark AGA titles (plus CD32/CDTV/CD-ROM variants), so a true "needs ECS but not OCS" split does not exist in the data — unmarked games are the universal bucket. For an A500, `--chipset ocs` (or `ecs`) is everything your machine can run.
+Retroplay's datfiles only mark AGA (plus CD32/CDTV/CD-ROM/NTSC) variants; there are no ECS-only or OCS-only markers in the data, so a finer split is not possible — unmarked games form the universal bucket. A stock A500 therefore plays everything selected by `--chipset ocs`.
 
 ## Examples
 
