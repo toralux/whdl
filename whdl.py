@@ -354,14 +354,16 @@ class FtpSession(object):
         self.ftp.connect(FTP_HOST, 21, timeout=90)
         self.ftp.login(FTP_USER, FTP_PASS)
         self.ftp.set_pasv(True)
-        self.ftp.cwd(PACKS_DIR)
+        self.ftp.cwd("/" + PACKS_DIR)
         self.cwd_dir = None
 
     def ensure_dir(self, subdir):
-        want = subdir if subdir else ""
+        # CWD with the full absolute remote path - this server resolves
+        # paths against the current directory, so partial paths break
+        # once the session sits inside a letter folder.
+        want = "/" + PACKS_DIR + "/" + subdir if subdir else "/" + PACKS_DIR
         if self.cwd_dir != want:
-            if want:
-                self.ftp.cwd(want)
+            self.ftp.cwd(want)
             self.cwd_dir = want
 
     def fetch(self, entry, final_path, subdir, quiet, stats, prog, index, total):
